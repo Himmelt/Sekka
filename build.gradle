@@ -33,6 +33,21 @@ buildscript {
     }
 }
 
+allprojects {
+    //skip tasks
+    gradle.taskGraph.whenReady {
+        tasks.each { task ->
+            if (task.name.contains("createVersionPropertiesFML")) {
+                task.enabled = false
+            }
+            //eclipseCauldron
+            // if (task.name.contains("eclipseCauldron")) {
+            //     task.enabled = false
+            // }
+        }
+    }
+}
+
 tasks.whenTaskAdded {
     if (it.name.startsWith('publish')) it.dependsOn 'preparePublication'
 }
