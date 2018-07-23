@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import org.apache.commons.lang.Validate;
 import org.bukkit.plugin.IllegalPluginAccessException;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scheduler.BukkitWorker;
@@ -31,7 +32,7 @@ import org.bukkit.scheduler.BukkitWorker;
  * <li>Changing the period on a task is delicate.
  *     Any future task needs to notify waiting threads.
  *     Async tasks must be synchronized to make sure that any thread that's finishing will remove itself from {@link #runners}.
- *     Another utility method is provided for this, {@link #cancelTask(CraftTask)}</li>
+ *     Another utility method is provided for this, {@link #cancelTask(int taskId)}</li>
  * <li>{@link #runners} provides a moderately up-to-date view of active tasks.
  *     If the linked head to tail set is read, all remaining tasks that were active at the time execution started will be located in runners.</li>
  * <li>Async tasks are responsible for removing themselves from runners</li>
@@ -81,37 +82,37 @@ public class CraftScheduler implements BukkitScheduler {
     }
 
     public int scheduleSyncDelayedTask(final Plugin plugin, final Runnable task) {
-        return this.scheduleSyncDelayedTask(plugin, task, 0l);
+        return this.scheduleSyncDelayedTask(plugin, task, 0L);
     }
 
     public BukkitTask runTask(Plugin plugin, Runnable runnable) {
-        return runTaskLater(plugin, runnable, 0l);
+        return runTaskLater(plugin, runnable, 0L);
     }
 
     @Deprecated
     public int scheduleAsyncDelayedTask(final Plugin plugin, final Runnable task) {
-        return this.scheduleAsyncDelayedTask(plugin, task, 0l);
+        return this.scheduleAsyncDelayedTask(plugin, task, 0L);
     }
 
     public BukkitTask runTaskAsynchronously(Plugin plugin, Runnable runnable) {
-        return runTaskLaterAsynchronously(plugin, runnable, 0l);
+        return runTaskLaterAsynchronously(plugin, runnable, 0L);
     }
 
     public int scheduleSyncDelayedTask(final Plugin plugin, final Runnable task, final long delay) {
-        return this.scheduleSyncRepeatingTask(plugin, task, delay, -1l);
+        return this.scheduleSyncRepeatingTask(plugin, task, delay, -1L);
     }
 
     public BukkitTask runTaskLater(Plugin plugin, Runnable runnable, long delay) {
-        return runTaskTimer(plugin, runnable, delay, -1l);
+        return runTaskTimer(plugin, runnable, delay, -1L);
     }
 
     @Deprecated
     public int scheduleAsyncDelayedTask(final Plugin plugin, final Runnable task, final long delay) {
-        return this.scheduleAsyncRepeatingTask(plugin, task, delay, -1l);
+        return this.scheduleAsyncRepeatingTask(plugin, task, delay, -1L);
     }
 
     public BukkitTask runTaskLaterAsynchronously(Plugin plugin, Runnable runnable, long delay) {
-        return runTaskTimerAsynchronously(plugin, runnable, delay, -1l);
+        return runTaskTimerAsynchronously(plugin, runnable, delay, -1L);
     }
 
     public int scheduleSyncRepeatingTask(final Plugin plugin, final Runnable runnable, long delay, long period) {
@@ -120,13 +121,13 @@ public class CraftScheduler implements BukkitScheduler {
 
     public BukkitTask runTaskTimer(Plugin plugin, Runnable runnable, long delay, long period) {
         validate(plugin, runnable);
-        if (delay < 0l) {
+        if (delay < 0L) {
             delay = 0;
         }
-        if (period == 0l) {
-            period = 1l;
-        } else if (period < -1l) {
-            period = -1l;
+        if (period == 0L) {
+            period = 1L;
+        } else if (period < -1L) {
+            period = -1L;
         }
         return handle(new CraftTask(plugin, runnable, nextId(), period), delay);
     }
@@ -138,13 +139,13 @@ public class CraftScheduler implements BukkitScheduler {
 
     public BukkitTask runTaskTimerAsynchronously(Plugin plugin, Runnable runnable, long delay, long period) {
         validate(plugin, runnable);
-        if (delay < 0l) {
+        if (delay < 0L) {
             delay = 0;
         }
-        if (period == 0l) {
-            period = 1l;
-        } else if (period < -1l) {
-            period = -1l;
+        if (period == 0L) {
+            period = 1L;
+        } else if (period < -1L) {
+            period = -1L;
         }
         return handle(new CraftAsyncTask(runners, plugin, runnable, nextId(), period), delay);
     }
@@ -152,7 +153,7 @@ public class CraftScheduler implements BukkitScheduler {
     public <T> Future<T> callSyncMethod(final Plugin plugin, final Callable<T> task) {
         validate(plugin, task);
         final CraftFuture<T> future = new CraftFuture<T>(task, plugin, nextId());
-        handle(future, 0l);
+        handle(future, 0L);
         return future;
     }
 
@@ -186,7 +187,7 @@ public class CraftScheduler implements BukkitScheduler {
                         }
                         return false;
                     }});
-        handle(task, 0l);
+        handle(task, 0L);
         for (CraftTask taskPending = head.getNext(); taskPending != null; taskPending = taskPending.getNext()) {
             if (taskPending == task) {
                 return;
@@ -219,7 +220,7 @@ public class CraftScheduler implements BukkitScheduler {
                         }
                     }
                 });
-        handle(task, 0l);
+        handle(task, 0L);
         for (CraftTask taskPending = head.getNext(); taskPending != null; taskPending = taskPending.getNext()) {
             if (taskPending == task) {
                 return;
@@ -251,7 +252,7 @@ public class CraftScheduler implements BukkitScheduler {
                         CraftScheduler.this.temp.clear();
                     }
                 });
-        handle(task, 0l);
+        handle(task, 0L);
         for (CraftTask taskPending = head.getNext(); taskPending != null; taskPending = taskPending.getNext()) {
             if (taskPending == task) {
                 break;
@@ -280,11 +281,11 @@ public class CraftScheduler implements BukkitScheduler {
         }
         for (CraftTask task = head.getNext(); task != null; task = task.getNext()) {
             if (task.getTaskId() == taskId) {
-                return task.getPeriod() >= -1l; // The task will run
+                return task.getPeriod() >= -1L; // The task will run
             }
         }
         CraftTask task = runners.get(taskId);
-        return task != null && task.getPeriod() >= -1l;
+        return task != null && task.getPeriod() >= -1L;
     }
 
     public List<BukkitWorker> getActiveWorkers() {
@@ -314,13 +315,13 @@ public class CraftScheduler implements BukkitScheduler {
 
         final ArrayList<BukkitTask> pending = new ArrayList<BukkitTask>();
         for (CraftTask task : runners.values()) {
-            if (task.getPeriod() >= -1l) {
+            if (task.getPeriod() >= -1L) {
                 pending.add(task);
             }
         }
 
         for (final CraftTask task : truePending) {
-            if (task.getPeriod() >= -1l && !pending.contains(task)) {
+            if (task.getPeriod() >= -1L && !pending.contains(task)) {
                 pending.add(task);
             }
         }
@@ -336,7 +337,7 @@ public class CraftScheduler implements BukkitScheduler {
         parsePending();
         while (isReady(currentTick)) {
             final CraftTask task = pending.remove();
-            if (task.getPeriod() < -1l) {
+            if (task.getPeriod() < -1L) {
                 if (task.isSync()) {
                     runners.remove(task.getTaskId(), task);
                 }
@@ -411,7 +412,7 @@ public class CraftScheduler implements BukkitScheduler {
         for (; task != null; task = (lastTask = task).getNext()) {
             if (task.getTaskId() == -1) {
                 task.run();
-            } else if (task.getPeriod() >= -1l) {
+            } else if (task.getPeriod() >= -1L) {
                 pending.add(task);
                 runners.put(task.getTaskId(), task);
             }

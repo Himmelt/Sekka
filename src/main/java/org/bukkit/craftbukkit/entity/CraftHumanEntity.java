@@ -38,7 +38,8 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
         super(server, entity);
         mode = server.getDefaultGameMode();
         this.inventory = new CraftInventoryPlayer(entity.inventory);
-        enderChest = new CraftInventory(entity.getEnderChest());
+        // TODO
+        //enderChest = new CraftInventory(entity.getEnderChest());
     }
 
     public String getName() {

@@ -1,9 +1,9 @@
 package org.bukkit.craftbukkit.chunkio;
 
-import net.minecraft.server.Chunk;
-import net.minecraft.server.ChunkRegionLoader;
-import net.minecraft.server.NBTTagCompound;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.nbt.NBTTagCompound;
 
+import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import org.bukkit.Server;
 import org.bukkit.craftbukkit.util.AsynchronousExecutor;
 import org.bukkit.craftbukkit.util.LongHash;
@@ -15,7 +15,7 @@ class ChunkIOProvider implements AsynchronousExecutor.CallBackProvider<QueuedChu
 
     // async stuff
     public Chunk callStage1(QueuedChunk queuedChunk) throws RuntimeException {
-        ChunkRegionLoader loader = queuedChunk.loader;
+        AnvilChunkLoader loader = queuedChunk.loader;
         Object[] data = loader.loadChunk(queuedChunk.world, queuedChunk.x, queuedChunk.z);
 
         if (data != null) {

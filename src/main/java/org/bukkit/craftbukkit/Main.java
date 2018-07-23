@@ -156,7 +156,8 @@ public class Main {
                 }
 
                 System.out.println("Loading libraries, please wait...");
-                MinecraftServer.main(options);
+                //TODO remove
+                //MinecraftServer.main(options);
             } catch (Throwable t) {
                 t.printStackTrace();
             }
