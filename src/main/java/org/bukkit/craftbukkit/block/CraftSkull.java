@@ -101,6 +101,7 @@ public class CraftSkull extends CraftBlockState implements Skull {
     }
 
     static BlockFace getBlockFace(byte rotation) {
+        //switch (rotation) {
         switch (rotation % 16) {
             case 0:
                 return BlockFace.NORTH;
@@ -166,7 +167,7 @@ public class CraftSkull extends CraftBlockState implements Skull {
     }
 
     public BlockFace getRotation() {
-        return getBlockFace(rotation);
+    	return getBlockFace(rotation);
     }
 
     public void setRotation(BlockFace rotation) {

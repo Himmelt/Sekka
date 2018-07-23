@@ -108,7 +108,7 @@ public class NormalChunkGenerator extends InternalChunkGenerator {
      * unimplemented.
      */
     public void saveExtraData() {}
-    
+
     // Cauldron start - return vanilla compatible IChunkProvider for forge
     public IChunkProvider getForgeChunkProvider()
     {

@@ -58,7 +58,7 @@ public class CraftTameableAnimal extends CraftAnimals implements Tameable, Creat
         } else {
             setTamed(false);
             setOwnerUUID(null);
-    }
+        }
     }
 
     public void setTamed(boolean tame) {

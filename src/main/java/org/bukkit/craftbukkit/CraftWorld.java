@@ -519,18 +519,17 @@ public class CraftWorld implements World {
                 int x = blocksnapshot.x;
                 int y = blocksnapshot.y;
                 int z = blocksnapshot.z;
-                net.minecraft.block.Block oldBlock = world.getBlock(x, y, z); 
+                net.minecraft.block.Block oldBlock = world.getBlock(x, y, z);
                 int newId = net.minecraft.block.Block.getIdFromBlock(blocksnapshot.replacedBlock);
                 int data = blocksnapshot.meta;
                 int flag = blocksnapshot.flag;
                 delegate.setTypeIdAndData(x, y, z, newId, data);
-                net.minecraft.block.Block newBlock = world.getBlock(x, y, z); 
+                net.minecraft.block.Block newBlock = world.getBlock(x, y, z);
                 world.markAndNotifyBlock(x, y, z, null, oldBlock, newBlock, flag);
             }
             world.capturedBlockSnapshots.clear();
             return true;
-        }
-        else {
+        } else {
             world.capturedBlockSnapshots.clear();
             return false;
         }
@@ -1409,7 +1408,7 @@ public class CraftWorld implements World {
 
             // Add unload request
             cps.unloadChunksIfNotNearSpawn(chunk.xPosition, chunk.zPosition);
-            continue;        	
+            continue;
         }
     }
 
@@ -1472,10 +1471,10 @@ public class CraftWorld implements World {
     {
         return spigot;
     }
-    
+
     // Spigot end
     public WorldServer getWorldServer()
     {
     	return this.world;
-    }    
+    }
 }

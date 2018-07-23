@@ -51,10 +51,10 @@ public class CraftSign extends CraftBlockState implements Sign {
     public static String[] sanitizeLines(String[] lines) {
         String[] astring = new String[4];
 
-            for(int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             if (i < lines.length && lines[i] != null) {
                 astring[i] = lines[i];
-                } else {
+            } else {
                 astring[i] = "";
             }
         }

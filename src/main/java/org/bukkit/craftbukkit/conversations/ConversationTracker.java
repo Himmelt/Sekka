@@ -44,9 +44,9 @@ public class ConversationTracker {
 
         LinkedList<Conversation> oldQueue = conversationQueue;
         conversationQueue = new LinkedList<Conversation>();
-        for(Conversation conversation : oldQueue) {
+        for (Conversation conversation : oldQueue) {
             try {
-            conversation.abandon(new ConversationAbandonedEvent(conversation, new ManuallyAbandonedConversationCanceller()));
+                conversation.abandon(new ConversationAbandonedEvent(conversation, new ManuallyAbandonedConversationCanceller()));
             } catch (Throwable t) {
                 Bukkit.getLogger().log(Level.SEVERE, "Unexpected exception while abandoning a conversation", t);
             }

@@ -143,7 +143,7 @@ import jline.console.ConsoleReader;
 public final class CraftServer implements Server {
     private static final Player[] EMPTY_PLAYER_ARRAY = new Player[0];
     public static Spigot spigot;
-    private final String serverName = "Cauldron"; // Cauldron - temporarily keep MCPC-Plus name until plugins adapt
+    private final String serverName = "Quorra"; // Quorra - temporarily keep MCPC-Plus name until plugins adapt
     private final String serverVersion;
     private final String bukkitVersion = Versioning.getBukkitVersion();
     private final Logger logger = Logger.getLogger("Minecraft");
@@ -242,7 +242,7 @@ public final class CraftServer implements Server {
             }
         };
         /* Cauldron start - moved to MinecraftServer so FML/Forge can access during server startup
-        configuration = YamlConfiguration.loadConfiguration(getConfigFile());        
+        configuration = YamlConfiguration.loadConfiguration(getConfigFile());
         configuration.options().copyDefaults(true);
         configuration.setDefaults(YamlConfiguration.loadConfiguration(getClass().getClassLoader().getResourceAsStream("configurations/bukkit.yml")));
         ConfigurationSection legacyAlias = null;
@@ -471,7 +471,7 @@ public final class CraftServer implements Server {
     @SuppressWarnings("unchecked")
     public Player[] _INVALID_getOnlinePlayers() {
         return getOnlinePlayers().toArray(EMPTY_PLAYER_ARRAY);
-        }
+    }
 
     @Override
     public List<CraftPlayer> getOnlinePlayers() {
@@ -745,11 +745,11 @@ public final class CraftServer implements Server {
         if(sender instanceof ConsoleCommandSender) {
             craftCommandMap.setVanillaConsoleSender(this.console);
         }
-            
+
         return this.dispatchVanillaCommand(sender, commandLine);
         // Cauldron end
     }
-    
+
     // Cauldron start
     // used to process vanilla commands
     public boolean dispatchVanillaCommand(CommandSender sender, String commandLine) {
@@ -761,7 +761,7 @@ public final class CraftServer implements Server {
 
         return false;
     }
-    // Cauldron end    
+    // Cauldron end
 
     @Override
     public void reload() {
@@ -955,9 +955,50 @@ public final class CraftServer implements Server {
             return world;
         }
 
+/*        if ((folder.exists()) && (!folder.isDirectory())) {
+            throw new IllegalArgumentException("File exists with the name '" + name + "' and isn't a folder");
+        }
+
+        if (generator == null) {
+            generator = getGenerator(name);
+        }
+
+        Convertable converter = new WorldLoaderServer(getWorldContainer());
+        if (converter.isConvertable(name)) {
+            getLogger().info("Converting world '" + name + "'");
+            converter.convert(name, new ConvertProgressUpdater(console));
+        }
+
+        int dimension = CraftWorld.CUSTOM_DIMENSION_OFFSET + console.worlds.size();
+        boolean used = false;
+        do {
+            for (WorldServer server : console.worlds) {
+                used = server.dimension == dimension;
+                if (used) {
+                    dimension++;
+                    break;
+                }
+            }
+        } while(used);*/
         boolean hardcore = false;
         WorldSettings worldSettings = new WorldSettings(creator.seed(), net.minecraft.world.WorldSettings.GameType.getByID(getDefaultGameMode().getValue()), generateStructures, hardcore, type);
         net.minecraft.world.WorldServer worldserver = DimensionManager.initDimension(creator, worldSettings);
+
+/*        if (!(worlds.containsKey(name.toLowerCase()))) {
+            return null;
+        }
+
+        internal.scoreboard = getScoreboardManager().getMainScoreboard().getHandle();
+
+        internal.tracker = new EntityTracker(internal);
+        internal.addIWorldAccess(new WorldManager(console, internal));
+        internal.difficulty = EnumDifficulty.EASY;
+        internal.setSpawnFlags(true, true);
+        console.worlds.add(internal);
+
+        if (generator != null) {
+            internal.getWorld().getPopulators().addAll(generator.getDefaultPopulators(internal.getWorld()));
+        }*/
 
         pluginManager.callEvent(new WorldInitEvent(worldserver.getWorld()));
         net.minecraftforge.cauldron.CauldronHooks.craftWorldLoading = true;
@@ -1006,6 +1047,10 @@ public final class CraftServer implements Server {
         net.minecraft.world.WorldServer handle = ((CraftWorld) world).getHandle();
 
         if (!(console.worlds.contains(handle))) {
+            return false;
+        }
+
+        if (!(handle.dimension > 1)) {
             return false;
         }
 
@@ -1338,13 +1383,13 @@ public final class CraftServer implements Server {
             } else {
                 // Use the GameProfile even when we get a UUID so we ensure we still have a name
                 result = getOfflinePlayer(profile);
-                        }
+            }
         } else {
             offlinePlayers.remove(result.getUniqueId());
-                    }
+        }
 
         return result;
-                }
+    }
 
     @Override
     public OfflinePlayer getOfflinePlayer(UUID id) {
@@ -1402,7 +1447,7 @@ public final class CraftServer implements Server {
     }
 
     @Override
-    public BanList getBanList(BanList.Type type){
+    public BanList getBanList(BanList.Type type) {
         Validate.notNull(type, "Type cannot be null");
 
         switch(type){
@@ -1525,7 +1570,7 @@ public final class CraftServer implements Server {
                 players.add(getOfflinePlayer(UUID.fromString(file.substring(0, file.length() - 4))));
             } catch (IllegalArgumentException ex) {
                 // Who knows what is in this directory, just ignore invalid files
-        }
+            }
         }
 
         players.addAll(getOnlinePlayers());
@@ -1599,7 +1644,7 @@ public final class CraftServer implements Server {
     public SimpleCommandMap getCommandMap() {
         return commandMap;
     }
-    
+
     // Cauldron start
     public CraftSimpleCommandMap getCraftCommandMap() {
         return craftCommandMap;

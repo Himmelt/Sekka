@@ -36,7 +36,12 @@ import net.minecraft.world.WorldServer;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.*;
+import org.bukkit.Achievement;
+import org.bukkit.BanList;
+import org.bukkit.Statistic;
+import org.bukkit.Material;
 import org.bukkit.Statistic.Type;
+import org.bukkit.World;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
@@ -491,7 +496,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         if (event.isCancelled()) {
             return false;
         }
-        
+
         // Spigot Start
         eject();
         leaveVehicle();
@@ -515,7 +520,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         } else {
         	//Thermos....transfer them correctly?!
             this.getHandle().mountEntity(null);
-        	thermos.thermite.ThermiteTeleportationHandler.transferPlayerToDimension(this.getHandle(), toWorld.dimension, this.getHandle().mcServer.getConfigurationManager(), to.getWorld().getEnvironment()); 
+        	thermos.thermite.ThermiteTeleportationHandler.transferPlayerToDimension(this.getHandle(), toWorld.dimension, this.getHandle().mcServer.getConfigurationManager(), to.getWorld().getEnvironment());
         	 //this.getHandle().playerNetServerHandler.teleport(to);
         	 this.getHandle().playerNetServerHandler.teleport(to);
         	 //this.getHandle().playerNetServerHandler.setPlayerLocation(to.getX(), to.getY(), to.getZ(), this.getHandle().rotationYaw, this.getHandle().rotationPitch);

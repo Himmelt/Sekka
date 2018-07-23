@@ -22,7 +22,7 @@ public class CraftInventory implements Inventory {
     public CraftInventory(net.minecraft.inventory.IInventory inventory) {
         this.inventory = inventory;
     }
-    
+
     public net.minecraft.inventory.IInventory getInventory() {
         return inventory;
     }
@@ -468,7 +468,7 @@ public class CraftInventory implements Inventory {
             if (inventory instanceof net.minecraft.tileentity.TileEntity) {
                 return CauldronUtils.getOwner((net.minecraft.tileentity.TileEntity)inventory);
             } else {
-                return null;                
+                return null;
             }
         }
         // Cauldron end

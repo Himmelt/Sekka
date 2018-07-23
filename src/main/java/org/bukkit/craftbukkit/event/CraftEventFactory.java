@@ -635,6 +635,10 @@ public class CraftEventFactory {
 
     // Non-Living Entities such as EntityEnderCrystal, EntityItemFrame, and EntityFireball need to call this
     public static boolean handleNonLivingEntityDamageEvent(Entity entity, DamageSource source, double damage) {
+        return handleNonLivingEntityDamageEvent(entity, source, damage, true);
+    }
+
+    public static boolean handleNonLivingEntityDamageEvent(Entity entity, DamageSource source, double damage, boolean cancelOnZeroDamage) {
         if (entity instanceof EntityEnderCrystal && !(source instanceof EntityDamageSource)) {
             return false;
         }
@@ -649,7 +653,7 @@ public class CraftEventFactory {
         if (event == null) {
             return false;
         }
-        return event.isCancelled() || (event.getDamage() == 0 && !(entity instanceof EntityItemFrame)); // Cauldron - fix frame removal
+        return event.isCancelled() || (cancelOnZeroDamage && event.getDamage() == 0 && !(entity instanceof EntityItemFrame)); // Cauldron - fix frame removal
     }
 
     public static PlayerLevelChangeEvent callPlayerLevelChangeEvent(Player player, int oldLevel, int newLevel) {

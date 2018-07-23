@@ -51,7 +51,7 @@ public class CraftBlock implements Block {
     private static final Biome[] BIOME_MAPPING = new Biome[BiomeGenBase.getBiomeGenArray().length];
     private static final BiomeGenBase[] BIOMEBASE_MAPPING = new BiomeGenBase[BiomeGenBase.getBiomeGenArray().length];
     // Cauldron end
-    
+
     public CraftBlock(CraftChunk chunk, int x, int y, int z) {
         this.x = x;
         this.y = y;
@@ -576,7 +576,7 @@ public class CraftBlock implements Block {
                 System.out.println("Adding biome mapping " + BiomeGenBase.getBiome(i).biomeID + " " + name + " at BiomeBase[" + i + "]");
                 net.minecraftforge.common.util.EnumHelper.addBukkitBiome(name); // Forge
                 BIOME_MAPPING[BiomeGenBase.getBiome(i).biomeID] = ((Biome) Enum.valueOf(Biome.class, name));
-                // Cauldron end           
+                // Cauldron end
             }
             if (BIOME_MAPPING[i] != null) {  /* Build reverse mapping for setBiome */
                 BIOMEBASE_MAPPING[BIOME_MAPPING[i].ordinal()] = BiomeGenBase.getBiome(i);
