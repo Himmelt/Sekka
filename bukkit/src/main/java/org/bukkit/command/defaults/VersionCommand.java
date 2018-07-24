@@ -91,7 +91,7 @@ public class VersionCommand extends BukkitCommand {
     }
 
     private String getAuthors(final PluginDescriptionFile desc) {
-        return "Fracica,Himmelt"
+        return "Fracica,Himmelt";
 /*        StringBuilder result = new StringBuilder();
         List<String> authors = desc.getAuthors();
 
