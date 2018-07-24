@@ -17,6 +17,8 @@ import org.bukkit.metadata.Metadatable;
 import org.bukkit.plugin.messaging.PluginMessageRecipient;
 import org.bukkit.util.Vector;
 
+import net.minecraft.world.WorldServer;
+
 /**
  * Represents a world, which may contain entities, chunks and blocks
  */
@@ -1226,7 +1228,7 @@ public interface World extends PluginMessageRecipient, Metadatable {
         }
     }
 
-    Spigot spigot();
+    public Spigot spigot();
     // Spigot end
 
     /**
@@ -1277,10 +1279,18 @@ public interface World extends PluginMessageRecipient, Metadatable {
             return lookup.get(id);
         }
 
+        // Cauldron start - allow forge to register environments
+        public static void registerEnvironment(Environment env) {
+            lookup.put(env.getId(),env);
+        }
+        // Cauldron end
+
         static {
             for (Environment env : values()) {
                 lookup.put(env.getId(), env);
             }
         }
     }
+
+    public abstract WorldServer getWorldServer();
 }

@@ -11,6 +11,12 @@ import com.google.common.collect.Maps;
  * have
  */
 public enum GameMode {
+    // Cauldron start - FakePlayers do not set their gametype and use the default
+    /**
+     * Default mode
+     */
+    NOT_SET(-1),
+    // Cauldron end
     /**
      * Creative mode may fly, build instantly, become invulnerable and create
      * free items.

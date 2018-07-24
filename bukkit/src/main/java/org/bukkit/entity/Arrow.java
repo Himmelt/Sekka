@@ -40,6 +40,7 @@ public interface Arrow extends Projectile {
      */
     public void setCritical(boolean critical);
 
+    // Spigot start
     public class Spigot extends Entity.Spigot
     {
 
@@ -55,4 +56,5 @@ public interface Arrow extends Projectile {
     }
 
     Spigot spigot();
+    // Spigot end
 }

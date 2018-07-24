@@ -59,7 +59,7 @@ public class InventoryClickEvent extends InventoryInteractEvent {
         this(view, type, slot, right ? (shift ? ClickType.SHIFT_RIGHT : ClickType.RIGHT) : (shift ? ClickType.SHIFT_LEFT : ClickType.LEFT), InventoryAction.SWAP_WITH_CURSOR);
     }
 
-    public InventoryClickEvent(InventoryView view, SlotType type, int slot, ClickType click, InventoryAction action) {
+    public InventoryClickEvent(InventoryView view, InventoryType.SlotType type, int slot, ClickType click, InventoryAction action) {
         super(view);
         this.slot_type = type;
         this.rawSlot = slot;
@@ -83,6 +83,14 @@ public class InventoryClickEvent extends InventoryInteractEvent {
     /**
      * Gets the inventory that was clicked, or null if outside of window
      * @return The clicked inventory
+     */
+    public Inventory getClickedInventory() {
+        return clickedInventory;
+    }
+
+    /**
+     * Gets the inventory that was clicked, or null if outside of window
+     * @return The Clicked inventory
      */
     public Inventory getClickedInventory() {
         return clickedInventory;

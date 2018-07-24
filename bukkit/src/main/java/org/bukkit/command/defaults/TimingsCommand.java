@@ -106,6 +106,65 @@ public class TimingsCommand extends BukkitCommand {
     }
     // Spigot end
 
+    // Spigot start - redesigned Timings Command
+    public void executeSpigotTimings(CommandSender sender, String[] args) {
+        if ( "on".equals( args[0] ) )
+        {
+            ( (SimplePluginManager) Bukkit.getPluginManager() ).useTimings( true );
+            CustomTimingsHandler.reload();
+            sender.sendMessage( "Enabled Timings & Reset" );
+            return;
+        } else if ( "off".equals( args[0] ) )
+        {
+            ( (SimplePluginManager) Bukkit.getPluginManager() ).useTimings( false );
+            sender.sendMessage( "Disabled Timings" );
+            return;
+        }
+
+        if ( !Bukkit.getPluginManager().useTimings() )
+        {
+            sender.sendMessage( "Please enable timings by typing /timings on" );
+            return;
+        }
+
+        boolean paste = "paste".equals( args[0] );
+        if ("reset".equals(args[0])) {
+            CustomTimingsHandler.reload();
+            sender.sendMessage("Timings reset");
+        } else if ("merged".equals(args[0]) || "report".equals(args[0]) || paste) {
+            long sampleTime = System.nanoTime() - timingStart;
+            int index = 0;
+            File timingFolder = new File("timings");
+            timingFolder.mkdirs();
+            File timings = new File(timingFolder, "timings.txt");
+            ByteArrayOutputStream bout = ( paste ) ? new ByteArrayOutputStream() : null;
+            while (timings.exists()) timings = new File(timingFolder, "timings" + (++index) + ".txt");
+            PrintStream fileTimings = null;
+            try {
+                fileTimings = ( paste ) ? new PrintStream( bout ) : new PrintStream( timings );
+
+                CustomTimingsHandler.printTimings(fileTimings);
+                fileTimings.println( "Sample time " + sampleTime + " (" + sampleTime / 1E9 + "s)" );
+
+                if ( paste )
+                {
+                    new PasteThread( sender, bout ).start();
+                    return;
+                }
+
+                sender.sendMessage("Timings written to " + timings.getPath());
+                sender.sendMessage( "Paste contents of file into form at http://www.spigotmc.org/go/timings to read results." );
+
+            } catch (IOException e) {
+            } finally {
+                if (fileTimings != null) {
+                    fileTimings.close();
+                }
+            }
+        }
+    }
+    // Spigot end
+
     @Override
     public boolean execute(CommandSender sender, String currentAlias, String[] args) {
         if (!testPermission(sender)) return true;
@@ -220,7 +279,7 @@ public class TimingsCommand extends BukkitCommand {
             }
         }
 
-        @Override
+        /*@Override
         public void run()
         {
             try
@@ -239,6 +298,30 @@ public class TimingsCommand extends BukkitCommand {
                 String location = con.getHeaderField( "Location" );
                 String pasteID = location.substring( "http://paste.ubuntu.com/".length(), location.length() - 1 );
                 sender.sendMessage( ChatColor.GREEN + "View timings results can be viewed at http://www.spigotmc.org/go/timings?url=" + pasteID );
+            } catch ( IOException ex )
+            {
+                sender.sendMessage( ChatColor.RED + "Error pasting timings, check your console for more information" );
+                Bukkit.getServer().getLogger().log( Level.WARNING, "Could not paste timings", ex );
+            }
+        }*/
+        public void run()
+        {
+            try
+            {
+                HttpURLConnection con = (HttpURLConnection) new URL( "https://timings.spigotmc.org/paste" ).openConnection();
+                con.setDoOutput( true );
+                con.setRequestMethod( "POST" );
+                con.setInstanceFollowRedirects( false );
+
+                OutputStream out = con.getOutputStream();
+                out.write( bout.toByteArray() );
+                out.close();
+
+                com.google.gson.JsonObject location = new com.google.gson.Gson().fromJson(new java.io.InputStreamReader(con.getInputStream()), com.google.gson.JsonObject.class);
+                con.getInputStream().close();
+
+                String pasteID = location.get( "key" ).getAsString();
+                sender.sendMessage( ChatColor.GREEN + "Timings results can be viewed at https://www.spigotmc.org/go/timings?url=" + pasteID );
             } catch ( IOException ex )
             {
                 sender.sendMessage( ChatColor.RED + "Error pasting timings, check your console for more information" );

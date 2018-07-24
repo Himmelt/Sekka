@@ -908,7 +908,7 @@ public interface Server extends PluginMessageRecipient {
     @Deprecated
     UnsafeValues getUnsafe();
 
-    public class Spigot
+    public static class Spigot
     {
 
         public org.bukkit.configuration.file.YamlConfiguration getConfig()
@@ -938,5 +938,5 @@ public interface Server extends PluginMessageRecipient {
         }
     }
 
-    Spigot spigot();
+    public Spigot spigot();
 }
