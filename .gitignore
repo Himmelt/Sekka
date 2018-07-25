@@ -2,6 +2,7 @@
 
 # eclipse
 /eclipse
+/ignores
 
 # idea
 .idea
