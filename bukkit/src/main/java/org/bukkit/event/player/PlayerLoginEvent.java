@@ -54,11 +54,6 @@ public class PlayerLoginEvent extends PlayerEvent {
         // Spigot end
     }
 
-    public PlayerLoginEvent(final Player player, final String hostname, final InetAddress address) {
-        this(player, hostname, address, address);
-        // Spigot end
-    }
-
     /**
      * @deprecated Address and hostname should be provided in other
      *     constructor
@@ -85,16 +80,6 @@ public class PlayerLoginEvent extends PlayerEvent {
     }
 
     // Spigot start
-    /**
-     * Gets the connection address of this player, regardless of whether it has been spoofed or not.
-     *
-     * @return the player's connection address
-     */
-    public InetAddress getRealAddress() {
-        return realAddress;
-    }
-    // Spigot end
-
     /**
      * Gets the connection address of this player, regardless of whether it has been spoofed or not.
      *

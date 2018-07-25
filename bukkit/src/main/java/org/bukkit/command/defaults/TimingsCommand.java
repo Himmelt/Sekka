@@ -83,68 +83,11 @@ public class TimingsCommand extends BukkitCommand {
                 CustomTimingsHandler.printTimings(fileTimings);
                 fileTimings.println( "Sample time " + sampleTime + " (" + sampleTime / 1E9 + "s)" );
 
+                // ++++<
                 fileTimings.println( "<spigotConfig>" );
                 fileTimings.println( Bukkit.spigot().getConfig().saveToString() );
                 fileTimings.println( "</spigotConfig>" );
-
-                if ( paste )
-                {
-                    new PasteThread( sender, bout ).start();
-                    return;
-                }
-
-                sender.sendMessage("Timings written to " + timings.getPath());
-                sender.sendMessage( "Paste contents of file into form at http://www.spigotmc.org/go/timings to read results." );
-
-            } catch (IOException e) {
-            } finally {
-                if (fileTimings != null) {
-                    fileTimings.close();
-                }
-            }
-        }
-    }
-    // Spigot end
-
-    // Spigot start - redesigned Timings Command
-    public void executeSpigotTimings(CommandSender sender, String[] args) {
-        if ( "on".equals( args[0] ) )
-        {
-            ( (SimplePluginManager) Bukkit.getPluginManager() ).useTimings( true );
-            CustomTimingsHandler.reload();
-            sender.sendMessage( "Enabled Timings & Reset" );
-            return;
-        } else if ( "off".equals( args[0] ) )
-        {
-            ( (SimplePluginManager) Bukkit.getPluginManager() ).useTimings( false );
-            sender.sendMessage( "Disabled Timings" );
-            return;
-        }
-
-        if ( !Bukkit.getPluginManager().useTimings() )
-        {
-            sender.sendMessage( "Please enable timings by typing /timings on" );
-            return;
-        }
-
-        boolean paste = "paste".equals( args[0] );
-        if ("reset".equals(args[0])) {
-            CustomTimingsHandler.reload();
-            sender.sendMessage("Timings reset");
-        } else if ("merged".equals(args[0]) || "report".equals(args[0]) || paste) {
-            long sampleTime = System.nanoTime() - timingStart;
-            int index = 0;
-            File timingFolder = new File("timings");
-            timingFolder.mkdirs();
-            File timings = new File(timingFolder, "timings.txt");
-            ByteArrayOutputStream bout = ( paste ) ? new ByteArrayOutputStream() : null;
-            while (timings.exists()) timings = new File(timingFolder, "timings" + (++index) + ".txt");
-            PrintStream fileTimings = null;
-            try {
-                fileTimings = ( paste ) ? new PrintStream( bout ) : new PrintStream( timings );
-
-                CustomTimingsHandler.printTimings(fileTimings);
-                fileTimings.println( "Sample time " + sampleTime + " (" + sampleTime / 1E9 + "s)" );
+                // ++++>
 
                 if ( paste )
                 {

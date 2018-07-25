@@ -2,7 +2,6 @@ package org.bukkit.craftbukkit.scoreboard;
 
 import java.util.Map;
 
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.Objective;
@@ -52,6 +51,15 @@ final class CraftScore implements Score {
     public void setScore(int score) throws IllegalStateException {
         objective.checkState().board.func_96529_a(entry, objective.getHandle()).setScorePoints(score);
     }
+
+    // Spigot start
+    @Override
+    public boolean isScoreSet() throws IllegalStateException {
+        net.minecraft.scoreboard.Scoreboard board = objective.checkState().board;
+
+        return board.getObjectiveNames().contains(entry) && board.func_96510_d(entry).containsKey(objective.getHandle());
+    }
+    // Spigot end
 
     public CraftScoreboard getScoreboard() {
         return objective.getScoreboard();

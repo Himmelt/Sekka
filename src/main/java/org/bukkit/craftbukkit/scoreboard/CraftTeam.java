@@ -101,6 +101,18 @@ final class CraftTeam extends CraftScoreboardComponent implements Team {
         return players.build();
     }
 
+    // Spigot start
+    public Set<String> getEntries() throws IllegalStateException {
+        CraftScoreboard scoreboard = checkState();
+
+        ImmutableSet.Builder<String> entries = ImmutableSet.builder();
+        for (Object o : team.getMembershipCollection()){
+            entries.add(o.toString());
+        }
+        return entries.build();
+    }
+    // Spigot end
+
     public int getSize() throws IllegalStateException {
         CraftScoreboard scoreboard = checkState();
 
@@ -109,28 +121,50 @@ final class CraftTeam extends CraftScoreboardComponent implements Team {
 
     public void addPlayer(OfflinePlayer player) throws IllegalStateException, IllegalArgumentException {
         Validate.notNull(player, "OfflinePlayer cannot be null");
+        // Spigot Start
+        addEntry(player.getName());
+    }
+
+    public void addEntry(String entry) throws IllegalStateException, IllegalArgumentException {
+        Validate.notNull(entry, "Entry cannot be null");
         CraftScoreboard scoreboard = checkState();
 
-        scoreboard.board.func_151392_a(player.getName(), team.getRegisteredName());
+        scoreboard.board.func_151392_a(entry, team.getRegisteredName());
+        // Spigot end
     }
 
     public boolean removePlayer(OfflinePlayer player) throws IllegalStateException, IllegalArgumentException {
         Validate.notNull(player, "OfflinePlayer cannot be null");
+        // Spigot start
+        return removeEntry(player.getName());
+    }
+
+    public boolean removeEntry(String entry) throws IllegalStateException, IllegalArgumentException {
+        Validate.notNull(entry, "Entry cannot be null");
         CraftScoreboard scoreboard = checkState();
 
-        if (!team.getMembershipCollection().contains(player.getName())) {
+        if (!team.getMembershipCollection().contains(entry)) {
             return false;
         }
 
-        scoreboard.board.removePlayerFromTeam(player.getName(), team);
+        scoreboard.board.removePlayerFromTeam(entry, team);
+        // Spigot end
         return true;
     }
 
     public boolean hasPlayer(OfflinePlayer player) throws IllegalArgumentException, IllegalStateException {
         Validate.notNull(player, "OfflinePlayer cannot be null");
+        // Spigot start
+        return hasEntry(player.getName());
+    }
+
+    public boolean hasEntry(String entry) throws IllegalArgumentException, IllegalStateException {
+        Validate.notNull("Entry cannot be null");
+
         CraftScoreboard scoreboard = checkState();
 
-        return team.getMembershipCollection().contains(player.getName());
+        return team.getMembershipCollection().contains(entry);
+        // Spigot end
     }
 
     @Override

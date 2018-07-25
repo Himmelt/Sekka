@@ -89,14 +89,6 @@ public class InventoryClickEvent extends InventoryInteractEvent {
     }
 
     /**
-     * Gets the inventory that was clicked, or null if outside of window
-     * @return The Clicked inventory
-     */
-    public Inventory getClickedInventory() {
-        return clickedInventory;
-    }
-
-    /**
      * Gets the type of slot that was clicked.
      *
      * @return the slot type
