@@ -1742,4 +1742,19 @@
 +        });
 +        return true;
 +    }
++
++    /**
++     * Bukkit - notify
++     */
++    public void notify(int x,int y,int z){
++        markBlockForUpdate(x,y,z);
++    }
++
++    /**
++     * Bukkit - update
++     */
++    public void update(int x, int y, int z, Block block){
++        notifyBlockChange(x, y, z, block);
++    }
++
  }
