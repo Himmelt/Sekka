@@ -161,7 +161,7 @@
       "serverreq":true
     },
     {
-      "name": "org.yaml:snakeyaml:1.9",
+      "name": "org.yaml:snakeyaml:1.21",
       "url" : "http://repo.maven.apache.org/maven2",
       "serverreq":true
     },

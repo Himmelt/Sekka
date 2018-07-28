@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        jcenter()
         maven {
             name 'prok'
             url 'https://djoveryde.000webhostapp.com/kcauldron/files/'
@@ -19,8 +20,6 @@ buildscript {
         flatDir {
             dirs 'libs'
         }
-        mavenCentral()
-        mavenLocal()
     }
     dependencies {
         classpath files('FGS.jar')
@@ -56,7 +55,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 repositories {
-    clear()
+    jcenter()
     maven {
         name 'sonatype'
         url 'http://oss.sonatype.org/content/repositories/snapshots/'
@@ -81,9 +80,6 @@ repositories {
     flatDir {
         dirs 'libs'
     }
-
-    mavenCentral()
-    mavenLocal()
 }
 
 minecraft {
@@ -124,7 +120,7 @@ def gitInfo(String key) {
 
 ext.mcVersion = "1.7.10"
 ext.forgeVersion = "1614"
-ext.revision = "UNOFFICIAL"
+ext.revision = "1.0.1"
 version = "${mcVersion}-${forgeVersion}.${revision}"
 
 launch4j {
@@ -162,7 +158,7 @@ dependencies {
     libraries 'org.scala-lang:scala-xml:2.11.0-M4'
     libraries 'net.sf.jopt-simple:jopt-simple:5.0.1'
     libraries 'lzma:lzma:0.0.1'
-    libraries 'org.yaml:snakeyaml:1.9'
+    libraries 'org.yaml:snakeyaml:1.21'
     libraries 'commons-lang:commons-lang:2.6'
     libraries 'org.avaje:ebean:2.7.3'
     libraries 'jline:jline:2.6'
