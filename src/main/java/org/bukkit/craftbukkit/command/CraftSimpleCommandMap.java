@@ -48,9 +48,9 @@ public class CraftSimpleCommandMap extends SimpleCommandMap {
                 if (!target.testPermission(sender)) return true;
                 if (sender instanceof ConsoleCommandSender)
                 {
-                    FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager().executeCommand(this.vanillaConsoleSender, commandLine);
+                    FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager().executeCommand(this.vanillaConsoleSender, '/' + commandLine);
                 }
-                else FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager().executeCommand(((CraftPlayer)sender).getHandle(), commandLine);
+                else FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager().executeCommand(((CraftPlayer)sender).getHandle(), '/' + commandLine);
             }
             else {
             // Cauldron end
