@@ -1,15 +1,7 @@
-!.gitignore
-
-# eclipse
-/eclipse
-/ignores
-
-# idea
-.idea
+.gradle/
+.idea/
+build/
+out/
+eclipse/
+ignores/
 *.iml
-
-# gradle
-build
-.gradle
-
-*.DS_Store
