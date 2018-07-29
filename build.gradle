@@ -34,6 +34,7 @@ allprojects {
             if (task.name.contains("createVersionPropertiesFML")
                     //|| task.name.contains("eclipseCauldron")
                     || task.name.contains("createChangelog")
+                    //|| task.name.contains("updateJson")
             ) {
                 task.enabled = false
             }
