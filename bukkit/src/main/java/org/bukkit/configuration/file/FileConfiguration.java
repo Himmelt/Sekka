@@ -1,26 +1,14 @@
 package org.bukkit.configuration.file;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-
 import org.apache.commons.lang.Validate;
-import org.bukkit.configuration.InvalidConfigurationException;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
-import java.nio.charset.Charset;
-
 import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
+
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * This is a base class for all File based implementations of {@link
@@ -34,6 +22,27 @@ public abstract class FileConfiguration extends MemoryConfiguration {
     public static boolean UTF_BIG;
     @Deprecated
     public static boolean SYSTEM_UTF;
+
+    public static final Charset CHARSET;
+
+    static {
+        String configCharset = System.getProperty("config.charset");
+        Charset charset = null, encode = null;
+        try {
+            encode = Charset.forName(System.getProperty("file.encoding"));
+        } catch (Throwable ignored) {
+        }
+        try {
+            charset = Charset.forName(configCharset);
+        } catch (Throwable ignored) {
+        }
+
+        if (encode != null && encode.equals(StandardCharsets.UTF_8)) CHARSET = StandardCharsets.UTF_8;
+        else if (configCharset != null && configCharset.equalsIgnoreCase("ANSI")) CHARSET = Charset.defaultCharset();
+        else if (charset != null) CHARSET = charset;
+        else CHARSET = StandardCharsets.UTF_8;
+        System.out.println("Yaml Config Charset Using " + CHARSET);
+    }
 
     /**
      * Creates an empty {@link FileConfiguration} with no default values.
@@ -63,8 +72,8 @@ public abstract class FileConfiguration extends MemoryConfiguration {
      * using UTF8.
      *
      * @param file File to save to.
-     * @throws IOException Thrown when the given file cannot be written to for
-     *     any reason.
+     * @throws IOException              Thrown when the given file cannot be written to for
+     *                                  any reason.
      * @throws IllegalArgumentException Thrown when file is null.
      */
     public void save(File file) throws IOException {
@@ -74,7 +83,7 @@ public abstract class FileConfiguration extends MemoryConfiguration {
 
         String data = saveToString();
 
-        Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+        Writer writer = new OutputStreamWriter(new FileOutputStream(file), CHARSET);
 
         try {
             writer.write(data);
@@ -94,8 +103,8 @@ public abstract class FileConfiguration extends MemoryConfiguration {
      * using UTF8.
      *
      * @param file File to save to.
-     * @throws IOException Thrown when the given file cannot be written to for
-     *     any reason.
+     * @throws IOException              Thrown when the given file cannot be written to for
+     *                                  any reason.
      * @throws IllegalArgumentException Thrown when file is null.
      */
     public void save(String file) throws IOException {
@@ -122,26 +131,26 @@ public abstract class FileConfiguration extends MemoryConfiguration {
      * thrown.
      *
      * @param file File to load from.
-     * @throws FileNotFoundException Thrown when the given file cannot be
-     *     opened.
-     * @throws IOException Thrown when the given file cannot be read.
+     * @throws FileNotFoundException         Thrown when the given file cannot be
+     *                                       opened.
+     * @throws IOException                   Thrown when the given file cannot be read.
      * @throws InvalidConfigurationException Thrown when the given file is not
-     *     a valid Configuration.
-     * @throws IllegalArgumentException Thrown when file is null.
+     *                                       a valid Configuration.
+     * @throws IllegalArgumentException      Thrown when file is null.
      */
     public void load(File file) throws FileNotFoundException, IOException, InvalidConfigurationException {
         Validate.notNull(file, "File cannot be null");
 
         final FileInputStream stream = new FileInputStream(file);
 
-        load(new InputStreamReader(stream, Charsets.UTF_8));
+        load(new InputStreamReader(stream, CHARSET));
     }
 
     @Deprecated
     public void load(InputStream stream) throws IOException, InvalidConfigurationException {
         Validate.notNull(stream, "Stream cannot be null");
 
-        load(new InputStreamReader(stream, Charsets.UTF_8));
+        load(new InputStreamReader(stream, CHARSET));
     }
 
     /**
@@ -152,10 +161,10 @@ public abstract class FileConfiguration extends MemoryConfiguration {
      * from the given stream.
      *
      * @param reader the reader to load from
-     * @throws IOException thrown when underlying reader throws an IOException
+     * @throws IOException                   thrown when underlying reader throws an IOException
      * @throws InvalidConfigurationException thrown when the reader does not
-     *      represent a valid Configuration
-     * @throws IllegalArgumentException thrown when reader is null
+     *                                       represent a valid Configuration
+     * @throws IllegalArgumentException      thrown when reader is null
      */
     public void load(Reader reader) throws IOException, InvalidConfigurationException {
         BufferedReader input = reader instanceof BufferedReader ? (BufferedReader) reader : new BufferedReader(reader);
@@ -187,12 +196,12 @@ public abstract class FileConfiguration extends MemoryConfiguration {
      * thrown.
      *
      * @param file File to load from.
-     * @throws FileNotFoundException Thrown when the given file cannot be
-     *     opened.
-     * @throws IOException Thrown when the given file cannot be read.
+     * @throws FileNotFoundException         Thrown when the given file cannot be
+     *                                       opened.
+     * @throws IOException                   Thrown when the given file cannot be read.
      * @throws InvalidConfigurationException Thrown when the given file is not
-     *     a valid Configuration.
-     * @throws IllegalArgumentException Thrown when file is null.
+     *                                       a valid Configuration.
+     * @throws IllegalArgumentException      Thrown when file is null.
      */
     public void load(String file) throws FileNotFoundException, IOException, InvalidConfigurationException {
         Validate.notNull(file, "File cannot be null");
@@ -212,8 +221,8 @@ public abstract class FileConfiguration extends MemoryConfiguration {
      *
      * @param contents Contents of a Configuration to load.
      * @throws InvalidConfigurationException Thrown if the specified string is
-     *     invalid.
-     * @throws IllegalArgumentException Thrown if contents is null.
+     *                                       invalid.
+     * @throws IllegalArgumentException      Thrown if contents is null.
      */
     public abstract void loadFromString(String contents) throws InvalidConfigurationException;
 
