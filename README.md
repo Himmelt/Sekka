@@ -1,4 +1,4 @@
-# Quorra
+# Sekka
 
 ![Minecraft Forge v10.13.4.1614][forge]
 ![Minecraft v1.7.10][mc]
@@ -9,10 +9,10 @@
 * Java 8u101 JDK or higher
 * `JAVA_HOME` defined on your OS
 
-## Building Quorra
+## Building Sekka
 * Checkout project
   * You can use IDE or clone from console:
-  `git clone https://github.com/Himmelt/Quorra.git`
+  `git clone https://github.com/Himmelt/Sekka.git`
 * Setup
   * Manual:
   `git submodule update --init --recursive`

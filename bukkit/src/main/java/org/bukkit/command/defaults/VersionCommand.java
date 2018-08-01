@@ -29,7 +29,7 @@ public class VersionCommand extends BukkitCommand {
         if (!testPermission(sender)) return true;
 
         if (args.length == 0) {
-            sender.sendMessage("This server is running Quorra | https://github.com/Himmelt/Quorra | " + Bukkit.getBukkitVersion() + " | " + Bukkit.getVersion());
+            sender.sendMessage("This server is running Sekka | https://github.com/Himmelt/Sekka | " + Bukkit.getBukkitVersion() + " | " + Bukkit.getVersion());
         } else {
             /*StringBuilder name = new StringBuilder();
 

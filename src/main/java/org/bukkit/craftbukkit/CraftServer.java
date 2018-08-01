@@ -144,7 +144,7 @@ public final class CraftServer implements Server {
     private static final Player[] EMPTY_PLAYER_ARRAY = new Player[0];
     public static Spigot spigot;
     // TODO fix remove Cauldron, just for Holographic Displays
-    private final String serverName = "Quorra-Cauldron"; // Quorra - temporarily keep MCPC-Plus name until plugins adapt
+    private final String serverName = "Sekka-Cauldron"; // Sekka - temporarily keep MCPC-Plus name until plugins adapt
     private final String serverVersion;
     private final String bukkitVersion = Versioning.getBukkitVersion();
     private final Logger logger = Logger.getLogger("Minecraft");
